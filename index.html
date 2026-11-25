@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Industrial Fire Watch | SIH 2026 Prototype</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
+<style>
+:root{--bg:#0e1215;--panel:#161b1f;--panel2:#1d242a;--bd:#2a333a;--tx:#e9eef0;--mu:#a3afb6;--fire:#ff6a3d;--per:#f2c14e;--oth:#8db4d8}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:'Inter',system-ui,sans-serif}
+button{font-family:inherit;cursor:pointer}
+button:hover{filter:brightness(1.15)}
+button:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.wrap{max-width:1400px;margin:0 auto;padding:24px 32px 40px;display:flex;flex-direction:column;gap:20px}
+.top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:14px}
+.logo{width:44px;height:44px;border-radius:12px;background:var(--panel2);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center}
+h1{margin:0;font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:600}
+.sub{font-size:13px;color:var(--mu);margin-top:2px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-size:12px;color:var(--mu);border:1px solid var(--bd);border-radius:999px;padding:6px 12px}
+.chip.warn{color:#1a1305;background:var(--per);border-color:var(--per);font-weight:600}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.kpi{background:var(--panel);border:1px solid var(--bd);border-radius:14px;padding:16px 18px}
+.kpi .l{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--mu)}
+.kpi .v{font-family:'Space Grotesk',sans-serif;font-size:34px;font-weight:600;margin-top:6px}
+.dot{width:10px;height:10px;border-radius:50%;display:block}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px}
+.pills{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.pill{min-height:44px;padding:0 16px;border-radius:999px;font-size:13px;font-weight:500;border:1px solid #3a454d;background:transparent;color:var(--tx)}
+.pill.on{background:var(--tx);color:var(--bg);border-color:var(--tx)}
+.main{display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start}
+.mapcol{flex:999 1 560px;min-width:0}
+.side{flex:1 1 360px;min-width:0;display:flex;flex-direction:column;gap:16px}
+.map{position:relative;height:560px;border-radius:16px;overflow:hidden;border:1px solid var(--bd);background-color:#121a1e;background-image:linear-gradient(#1a2429 1px,transparent 1px),linear-gradient(90deg,#1a2429 1px,transparent 1px);background-size:56px 56px}
+.stage{position:absolute;left:50%;top:50%;width:1280px;height:768px;margin:-384px 0 0 -640px;overflow:hidden;filter:invert(1) hue-rotate(180deg) brightness(.85) contrast(.9) saturate(.55)}
+.stage img{position:absolute;width:256px;height:256px}
+.veil{position:absolute;inset:0;background:#0e121533;pointer-events:none}
+.zone{position:absolute;left:50%;top:50%;border:1.5px dashed #8fa3ad;background:#e9eef01a;border-radius:10px}
+.zone span{position:absolute;left:0;top:-24px;white-space:nowrap;font-size:12px;background:#0e1215cc;border-radius:6px;padding:3px 8px}
+.hs{position:absolute;left:50%;top:50%;width:44px;height:44px;padding:0;border:0;background:transparent;display:flex;align-items:center;justify-content:center}
+.tag{position:absolute;font-size:12px;background:#0e1215cc;border:1px solid var(--bd);border-radius:8px;padding:6px 10px}
+.legend{right:16px;bottom:14px;display:flex;flex-wrap:wrap;gap:14px}
+.legend span{display:flex;align-items:center;gap:6px}
+.card{background:var(--panel);border:1px solid var(--bd);border-radius:16px;padding:18px}
+.metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0}
+.m{background:var(--panel2);border-radius:10px;padding:10px 12px}
+.m .l{font-size:12px;color:var(--mu)}
+.m .v{font-size:15px;font-weight:500;margin-top:2px}
+.sig{display:flex;gap:10px;font-size:14px;color:#cfd8dc;line-height:1.4;margin-top:8px}
+.sig i{flex:none;width:6px;height:6px;border-radius:50%;background:var(--mu);margin-top:7px}
+.row{display:flex;align-items:center;gap:12px;width:100%;min-height:52px;padding:8px 10px;border-radius:10px;color:var(--tx);border:1px solid transparent;background:transparent;text-align:left}
+.row.on{border-color:var(--tx);background:var(--panel2)}
+.btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.btn{flex:1 1 140px;min-height:44px;border-radius:10px;font-size:14px;font-weight:500;border:1px solid #3a454d;background:transparent;color:var(--tx)}
+.btn.p{border:0;background:var(--fire);color:#1a0f0a;font-weight:600}
+@media(max-width:900px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.wrap{padding:16px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <div class="top">
+  <div class="brand">
+   <div class="logo"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff6a3d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-6 1-9z"/></svg></div>
+   <div><h1>Industrial Fire Watch</h1><div class="sub">AI detection and classification of industrial fires and persistent thermal sources</div></div>
+  </div>
+  <div class="chips"><span class="chip">NASA FIRMS</span><span class="chip">OpenStreetMap</span><span class="chip">Satellite imagery</span><span class="chip warn">Prototype · sample data</span></div>
+ </div>
+ <div class="kpis" id="kpis"></div>
+ <div class="bar"><div class="pills" id="filters"></div><button class="pill" id="zbtn" aria-pressed="true"></button></div>
+ <div class="main">
+  <div class="mapcol">
+   <div class="map" id="map">
+    <div class="stage"><img src="https://tile.openstreetmap.org/8/183/110.png" alt="" style="left: -244px; top: -156px">
+<img src="https://tile.openstreetmap.org/8/184/110.png" alt="" style="left: 12px; top: -156px">
+<img src="https://tile.openstreetmap.org/8/185/110.png" alt="" style="left: 268px; top: -156px">
+<img src="https://tile.openstreetmap.org/8/186/110.png" alt="" style="left: 524px; top: -156px">
+<img src="https://tile.openstreetmap.org/8/187/110.png" alt="" style="left: 780px; top: -156px">
+<img src="https://tile.openstreetmap.org/8/188/110.png" alt="" style="left: 1036px; top: -156px">
+<img src="https://tile.openstreetmap.org/8/183/111.png" alt="" style="left: -244px; top: 100px">
+<img src="https://tile.openstreetmap.org/8/184/111.png" alt="" style="left: 12px; top: 100px">
+<img src="https://tile.openstreetmap.org/8/185/111.png" alt="" style="left: 268px; top: 100px">
+<img src="https://tile.openstreetmap.org/8/186/111.png" alt="" style="left: 524px; top: 100px">
+<img src="https://tile.openstreetmap.org/8/187/111.png" alt="" style="left: 780px; top: 100px">
+<img src="https://tile.openstreetmap.org/8/188/111.png" alt="" style="left: 1036px; top: 100px">
+<img src="https://tile.openstreetmap.org/8/183/112.png" alt="" style="left: -244px; top: 356px">
+<img src="https://tile.openstreetmap.org/8/184/112.png" alt="" style="left: 12px; top: 356px">
+<img src="https://tile.openstreetmap.org/8/185/112.png" alt="" style="left: 268px; top: 356px">
+<img src="https://tile.openstreetmap.org/8/186/112.png" alt="" style="left: 524px; top: 356px">
+<img src="https://tile.openstreetmap.org/8/187/112.png" alt="" style="left: 780px; top: 356px">
+<img src="https://tile.openstreetmap.org/8/188/112.png" alt="" style="left: 1036px; top: 356px">
+<img src="https://tile.openstreetmap.org/8/183/113.png" alt="" style="left: -244px; top: 612px">
+<img src="https://tile.openstreetmap.org/8/184/113.png" alt="" style="left: 12px; top: 612px">
+<img src="https://tile.openstreetmap.org/8/185/113.png" alt="" style="left: 268px; top: 612px">
+<img src="https://tile.openstreetmap.org/8/186/113.png" alt="" style="left: 524px; top: 612px">
+<img src="https://tile.openstreetmap.org/8/187/113.png" alt="" style="left: 780px; top: 612px">
+<img src="https://tile.openstreetmap.org/8/188/113.png" alt="" style="left: 1036px; top: 612px"></div>
+    <div class="veil"></div>
+    <div id="zones"></div>
+    <div id="pins"></div>
+    <div class="tag" style="left:16px;bottom:14px;color:var(--mu)">Sample detections · illustrative locations</div>
+    <div class="tag" style="right:12px;top:12px;font-size:11px;padding:3px 8px;color:#cfd8dc">© OpenStreetMap contributors</div>
+    <div class="tag legend"><span><i class="dot" style="width:12px;height:12px;background:var(--fire)"></i>Industrial fire</span><span><i class="dot" style="width:12px;height:12px;border-radius:3px;background:var(--per)"></i>Persistent thermal</span><span><i class="dot" style="width:12px;height:12px;border:2px solid var(--oth);background:transparent"></i>Other</span></div>
+   </div>
+  </div>
+  <div class="side"><div class="card" id="detail"></div><div class="card" style="padding:12px"><div style="font-size:13px;font-weight:600;padding:6px 8px 4px">Detections</div><div id="list"></div></div></div>
+ </div>
+</div>
+<script>
+const META={fire:{label:'Industrial fire',c:'#ff6a3d'},persistent:{label:'Persistent thermal source',c:'#f2c14e'},other:{label:'Other / vegetation',c:'#8db4d8'}};
+const DATA=[
+{id:'H-01',cls:'fire',x:-155,y:119,frp:142.6,br:367.0,conf:'High',sat:'VIIRS NOAA-20',days:1,land:'landuse=industrial',model:.91,sig:['Inside an OSM industrial polygon','First detection in the last 7 days, so not a standing heat source','Radiative power is far above the local baseline']},
+{id:'H-02',cls:'persistent',x:87,y:-106,frp:38.4,br:341.2,conf:'High',sat:'VIIRS S-NPP',days:6,land:'landuse=industrial',model:.88,sig:['Inside an OSM industrial polygon','Detected on 6 of the last 7 days at the same location','Radiative power is steady, with no sudden spike']},
+{id:'H-03',cls:'persistent',x:215,y:-18,frp:27.9,br:336.5,conf:'High',sat:'VIIRS NOAA-21',days:7,land:'landuse=industrial',model:.86,sig:['Inside an OSM industrial polygon','Detected on every one of the last 7 days','Low, stable radiative power matches a furnace or flare stack']},
+{id:'H-04',cls:'other',x:-109,y:-147,frp:12.1,br:331.0,conf:'Nominal',sat:'MODIS Aqua',days:1,land:'landuse=farmland',model:.79,sig:['Outside every OSM industrial polygon','Surrounded by farmland, which suggests crop-residue burning','Single-day detection with low radiative power']},
+{id:'H-05',cls:'fire',x:-91,y:102,frp:96.3,br:358.4,conf:'High',sat:'VIIRS NOAA-20',days:2,land:'landuse=industrial',model:.84,sig:['Inside an OSM industrial polygon','Radiative power jumped well above earlier readings','Only 2 detections, too new to call a persistent source']},
+{id:'H-06',cls:'other',x:64,y:88,frp:8.7,br:326.9,conf:'Low',sat:'MODIS Terra',days:1,land:'natural=wood',model:.72,sig:['Outside every OSM industrial polygon','Forest land cover points to a vegetation fire','Low sensor confidence, so worth a second pass']},
+{id:'H-07',cls:'persistent',x:-46,y:74,frp:21.5,br:333.8,conf:'High',sat:'VIIRS S-NPP',days:5,land:'landuse=industrial',model:.83,sig:['Inside an OSM industrial polygon','Detected on 5 of the last 7 days','Low, stable radiative power']},
+{id:'H-08',cls:'other',x:155,y:-69,frp:15.4,br:334.1,conf:'Nominal',sat:'MODIS Aqua',days:1,land:'landuse=meadow',model:.77,sig:['Outside every OSM industrial polygon','Open grassland around the pixel','Single-day detection with modest radiative power']}
+];
+const ZONES=[[-123,110,130,96],[87,-106,90,70],[215,-18,90,70]];
+const ST={open:['Needs review','#f2c14e','#5a4a1c'],verified:['Verified','#6fd3a5','#245240'],dismissed:['Dismissed','#a3afb6','#3a454d']};
+const S={filter:'all',sel:'H-01',zones:true,status:{}};
+const $=id=>document.getElementById(id);
+const shape=(cls,size)=>{const c=META[cls].c,b='display:block;width:'+size+'px;height:'+size+'px;';
+ return cls==='fire'?b+'border-radius:50%;background:'+c+';':cls==='persistent'?b+'border-radius:3px;background:'+c+';':b+'border-radius:50%;border:2px solid '+c+';background:transparent;';};
+const st=h=>S.status[h.id]||'open';
+function render(){
+ const vis=DATA.filter(h=>S.filter==='all'||h.cls===S.filter);
+ const sel=vis.find(h=>h.id===S.sel)||vis[0]||null;
+ const n=k=>DATA.filter(h=>h.cls===k).length;
+ const kp=[['Detections in view',DATA.length,'#e9eef0'],['Industrial fires',n('fire'),'#ff6a3d'],['Persistent thermal sources',n('persistent'),'#f2c14e'],['Awaiting review',DATA.filter(h=>st(h)==='open').length,'#8db4d8']];
+ $('kpis').innerHTML=kp.map(k=>`<div class="kpi"><div class="l"><i class="dot" style="background:${k[2]}"></i>${k[0]}</div><div class="v">${k[1]}</div></div>`).join('');
+ const fl=[['all','All',DATA.length],['fire','Industrial fire',n('fire')],['persistent','Persistent thermal',n('persistent')],['other','Other',n('other')]];
+ $('filters').innerHTML='<span style="font-size:13px;color:var(--mu);margin-right:4px">Show</span>'+fl.map(f=>`<button class="pill ${S.filter===f[0]?'on':''}" data-f="${f[0]}">${f[1]} · ${f[2]}</button>`).join('');
+ $('zbtn').textContent='Industrial zone overlay: '+(S.zones?'On':'Off');$('zbtn').setAttribute('aria-pressed',S.zones);
+ $('zones').innerHTML=S.zones?ZONES.map(z=>`<div class="zone" style="width:${z[2]}px;height:${z[3]}px;margin:${z[1]-z[3]/2}px 0 0 ${z[0]-z[2]/2}px"><span>Industrial zone (sample)</span></div>`).join(''):'';
+ $('pins').innerHTML=vis.map(h=>{const on=sel&&sel.id===h.id,dim=st(h)==='dismissed'?'opacity:.35;':'';
+  const ring=on?'box-shadow:0 0 0 3px #0e1215,0 0 0 5px #fff;':'box-shadow:0 0 0 2px #0e1215;';
+  return `<button class="hs" data-id="${h.id}" aria-label="${h.id}, ${META[h.cls].label}, ${ST[st(h)][0]}" style="margin:${h.y-22}px 0 0 ${h.x-22}px;${dim}"><span style="${shape(h.cls,h.cls==='fire'?18:16)}${ring}"></span></button>`}).join('');
+ $('list').innerHTML=vis.map(h=>`<button class="row ${sel&&sel.id===h.id?'on':''}" data-id="${h.id}"><span style="${shape(h.cls,14)}flex:none;${st(h)==='dismissed'?'opacity:.35;':''}"></span><span style="flex:1 1 auto;min-width:0"><span style="display:block;font-size:14px;font-weight:500">${h.id} · ${META[h.cls].label}</span><span style="display:block;font-size:12px;color:var(--mu);margin-top:2px">${h.sat} · FRP ${h.frp.toFixed(1)} MW</span></span><span style="font-size:12px;color:var(--mu)">${ST[st(h)][0]}</span></button>`).join('');
+ if(!sel){$('detail').innerHTML='<div style="font-size:14px;color:var(--mu);padding:24px 0;text-align:center">No detections match this filter.</div>';return;}
+ const s=ST[st(sel)],pct=Math.round(sel.model*100);
+ const M=[['Fire radiative power',sel.frp.toFixed(1)+' MW'],['Brightness',sel.br.toFixed(1)+' K'],['Sensor confidence',sel.conf],['Satellite',sel.sat],['Seen in last 7 days',sel.days+(sel.days===1?' day':' days')],['OSM land use',sel.land]];
+ $('detail').innerHTML=`<div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start"><div><div style="font-size:12px;color:var(--mu)">Detection ${sel.id}</div><div style="font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:600;margin-top:2px">${META[sel.cls].label}</div></div><span style="font-size:12px;font-weight:600;white-space:nowrap;color:${s[1]};border:1px solid ${s[2]};border-radius:999px;padding:5px 10px">${s[0]}</span></div>
+ <div style="margin-top:14px"><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--mu);margin-bottom:6px"><span>Classifier confidence</span><span>${pct}%</span></div><div style="height:8px;border-radius:999px;background:#232c32;overflow:hidden"><div style="height:100%;width:${pct}%;background:${META[sel.cls].c}"></div></div></div>
+ <div class="metrics">${M.map(m=>`<div class="m"><div class="l">${m[0]}</div><div class="v">${m[1]}</div></div>`).join('')}</div>
+ <div style="font-size:13px;font-weight:600">Why this classification</div>${sel.sig.map(t=>`<div class="sig"><i></i><span>${t}</span></div>`).join('')}
+ <div class="btns">${st(sel)==='open'?`<button class="btn p" data-a="verified">Verify and alert</button><button class="btn" data-a="dismissed">Dismiss</button>`:`<button class="btn" data-a="open">Reopen for review</button>`}</div>`;
+}
+document.addEventListener('click',e=>{
+ const f=e.target.closest('[data-f]'),i=e.target.closest('[data-id]'),a=e.target.closest('[data-a]');
+ if(f)S.filter=f.dataset.f;else if(i)S.sel=i.dataset.id;else if(a)S.status[S.sel]=a.dataset.a;else if(e.target.closest('#zbtn'))S.zones=!S.zones;else return;
+ render();
+});
+render();
+</script>
+</body>
+</html>
